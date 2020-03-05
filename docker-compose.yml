@@ -1,48 +1,86 @@
-version: '3.6'
+version: '3.7'
 
 services:
-
-  database:
-    image: postgres:10.4
+  channeler-redis:
+    container_name: channeler-redis
+    image: redis:5.0.7-alpine
     ports:
-      - "0:5432"
-    volumes: 
-      - postgres_data:/var/lib/postgresql/data/
+      - 6380:6379
 
-  redis:
-    image: redis:4.0.9
+  channeler-database:
+    container_name: channeler-database
+    image: postgres:12.1-alpine
     ports:
-      - "0:6379"
+      - 5433:5432
+    restart: always
+    volumes:
+      - channeler-database:/var/lib/postgresql/data
 
-  channeler: &base
-    build: .
-    command: >
-      bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  channeler-server:
+    build:
+      context: ./server
+    command: daphne --bind 0.0.0.0 --port 8000 channeler.asgi:application
+    container_name: channeler-server
+    depends_on: 
+      - channeler-redis
+      - channeler-database
+    env_file: 
+      - ./server/.env
+    ports:
+      - 8001:8000
+    volumes:
+      - media:/usr/src/app/media
+      - static:/usr/src/app/static
+
+  channeler-worker:
+    build:
+      context: ./server
+    command: python manage.py rqworker
+    container_name: channeler-worker
+    depends_on: 
+      - channeler-redis
+      - channeler-database
+    env_file: 
+      - ./server/.env
+
+  channeler-client-react:
+    build:
+      context: ./client-react
+    command: npm start
+    container_name: channeler-client-react
     depends_on:
-      - database
-      - redis
-    links:
-      - database
-      - redis
-    environment:
-      - DJANGO_SETTINGS_MODULE=settings.local
-      - PGDATABASE=postgres
-      - PGUSER=postgres
-    #   - PGPASSWORD=pAssw0rd!
-      - PGHOST=database_1
-    #   - PGPORT=5432
-      - REDIS_URL=redis://redis_1:6379
-    volumes: 
-      - .:/code
-
-  channeler_app:
-    <<: *base
+      - channeler-server
     ports:
-      - "8000:8000"
+      - 3001:3000
 
-  channeler_worker:
-    <<: *base
-    command: bash -c 'python manage.py rqworker'
+  # channeler-client-angular:
+  #   build:
+  #     context: ./client-angular
+  #   command: ng serve --host 0.0.0.0
+  #   container_name: channeler-client-angular
+  #   depends_on:
+  #     - channeler-server
+  #   environment:
+  #     - CHROME_BIN=chromium-browser
+  #   ports:
+  #     - 4201:4200
+
+  channeler-nginx:
+    build:
+      context: ./nginx
+    container_name: channeler-nginx
+    depends_on:
+      - channeler-server
+      - channeler-client-react
+      # - channeler-client-angular
+    ports:
+      - 8080:80
+    restart: always
+    volumes:
+      - media:/usr/src/app/media
+      - static:/usr/src/app/static
 
 volumes:
-  postgres_data:
+  channeler-database:
+  media:
+  static:

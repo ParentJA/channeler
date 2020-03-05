@@ -33,7 +33,7 @@ export class TaskService {
   constructor(private client: HttpClient) {}
 
   createTask(
-    duration: number = 10, 
+    duration: number = 10,
     sync: boolean = true
   ): Observable<Task> {
     let url: string = `${HTTP_BASE_URL}/tasks/`;
