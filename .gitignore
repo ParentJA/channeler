@@ -82,7 +82,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+# .env
 .venv
 env/
 venv/
@@ -155,3 +155,5 @@ fabric.properties
 
 # Editor-based Rest Client
 .idea/httpRequests
+
+node_modules/
