@@ -46,7 +46,7 @@ services:
   channeler-client-vue:
     build:
       context: ./client-vue
-    command: npx vue-cli-service serve --port 3000
+    command: npm run serve
     container_name: channeler-client-vue
     depends_on: 
       - channeler-server
