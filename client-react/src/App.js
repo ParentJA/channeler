@@ -59,7 +59,7 @@ function App () {
       clearInterval(intervalId);
       intervalId = setInterval(async () => {
         toast.info('Are you done yet?');
-        const response = await await axios.get(`/tasks/${task.id}/`);
+        const response = await axios.get(`/tasks/${task.id}/`);
         setTasks(oldTasks => {
           const newTasks = [...oldTasks];
           newTasks[newTasks.length - 1] = response.data;
