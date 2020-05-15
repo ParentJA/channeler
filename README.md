@@ -1,13 +1,33 @@
 # Channeler
 
-## Project Setup
+## Introduction
+
+You don't have to search hard to find an article touting the benefits of WebSockets over polling. Finding an end-to-end example that demonstrates this comparison using asynchronous task processing takes a little more work. In this tutorial, we're going to program an app that creates a long-running process and offloads it onto a task queue. We'll include controls that allow the user to toggle between using WebSockets and polling to learn when the task has finished.
+
+## Initial Setup
 
 Our application uses:
 
-- Python (3.6.4)
-- Django (2.0.5)
-- Postgres (10.4)
-- Redis (4.0.8)
+- Python (v3.8)
+- Django (v3.0)
+- Django Channels (v2.4)
+- Redis (v5.0)
+- Nginx (v1.17)
+- Docker Engine (v19.03.5)
+- Docker Compose (v1.25.2)
+
+You can either clone the [`channeler` GitHub repository]() to get the complete code, or you can follow along to create the project from scratch.
+
+Create a new directory called *channeler* and add a *server* child directory. Change directories into *server*.
+
+```sh
+$ mkdir -p channeler/server
+$ cd channeler/server
+```
+
+
+
+
 
 Open your terminal and create a new PostgreSQL user and database. Enter a password when prompted.
 
