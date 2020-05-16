@@ -1,6 +1,6 @@
 channels==2.1.1
 channels-redis==2.2.0
-Django==2.0.5
+Django==2.2.10
 django-cors-headers==2.2.0
 django-nose==1.4.5
 djangorestframework==3.8.2
