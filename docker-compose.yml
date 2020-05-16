@@ -3,13 +3,13 @@ version: '3.7'
 services:
   channeler-redis:
     container_name: channeler-redis
-    image: redis:5.0.7-alpine
+    image: redis:6-alpine
     ports:
       - 6380:6379
 
   channeler-database:
     container_name: channeler-database
-    image: postgres:12.1-alpine
+    image: postgres:12-alpine
     ports:
       - 5433:5432
     restart: always

@@ -1,4 +1,4 @@
-FROM python:3.8.2-alpine
+FROM python:3.8.3-alpine
 
 RUN apk update && apk add build-base python-dev py-pip jpeg-dev zlib-dev openssl-dev gcc libffi-dev postgresql-dev
 ENV LIBRARY_PATH=/lib:/usr/lib
