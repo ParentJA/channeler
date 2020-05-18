@@ -8,7 +8,7 @@ import './App.css';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 
-const socket = new WebSocket('ws://localhost:8080/tasks/');
+const socket = new WebSocket(`ws://${process.env.REACT_APP_HOSTNAME}/tasks/`);
 
 function App () {
   const [tasks, setTasks] = useState([]);

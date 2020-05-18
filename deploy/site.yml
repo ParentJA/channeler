@@ -1,0 +1,50 @@
+---
+- hosts: all
+  tasks:
+
+    - name: Run apt-get update
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Install Python
+      become: yes
+      apt:
+        pkg:
+          - python3
+          - python3-venv
+
+    - name: Install Git
+      become: yes
+      apt:
+        name: git
+
+    - name: Install PostgreSQL
+      become: yes
+      apt:
+        pkg:
+          - postgresql
+          - postgresql-contrib
+
+    - name: Install Redis
+      become: yes
+      apt: 
+        name: redis-server
+
+    - name: Install NVM
+      become: yes
+      shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+      args:
+        chdir: '/home/ubuntu'
+        creates: '/home/ubuntu/.nvm/nvm.sh'
+        executable: '/bin/bash'
+
+    - name: Install and use Node using NVM
+      become: yes
+      shell: >
+        . /home/ubuntu/.nvm/nvm.sh && nvm install 14.2.0
+      args:
+        chdir: '/home/ubuntu'
+        creates: '/home/ubuntu/.nvm/versions/node'
+        executable: '/bin/bash'

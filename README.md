@@ -25,10 +25,6 @@ $ mkdir -p channeler/server
 $ cd channeler/server
 ```
 
-
-
-
-
 Open your terminal and create a new PostgreSQL user and database. Enter a password when prompted.
 
 ```bash

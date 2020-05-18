@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import 'bootswatch/dist/lumen/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
